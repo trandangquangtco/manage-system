@@ -1,5 +1,5 @@
 /* eslint-disable import/extensions */
-import { status } from '../../models/category/statusModel.js';
+import { status } from '../../models/category/statusModel';
 
 const addStatus = (body) => status.create(body);
 

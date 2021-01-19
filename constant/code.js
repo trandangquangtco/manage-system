@@ -4,10 +4,10 @@ const notFoundNumb = 404;
 const badRequestNumb = 400;
 const unAuthorizeNumb = 401;
 
-const badRequestCode = 'BadReq';
+const badRequestCode = 'Bad_Request';
 const internalErrorCode = 'InternalServerError';
 
-const noValidFound = 'no valid data found';
+const noValidFound = [];
 const internalError = 'Internal Server Error';
 const badRequest = 'Bad Request';
 export {

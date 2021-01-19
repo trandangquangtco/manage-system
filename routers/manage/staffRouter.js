@@ -8,7 +8,7 @@ import { authenticate } from '../../middlewares/middleware.js';
 const router = express.Router();
 
 router.post('/staffs', authenticate, createStaff);
-router.get('/staffs', authenticate, readStaff);
+router.post('/staffs', authenticate, readStaff);
 router.get('/staffs-full', authenticate, readStaffFull);
 router.get('/staffs/:id', authenticate, readOneStaff);
 router.put('/staffs/:id', authenticate, updateStaff);

@@ -8,7 +8,7 @@ import * as code from '../../constant/code.js';
 const createTechStack = async (req, res) => {
   try {
     const create = await addTech(req.body);
-    res.json(success('tech stack', 'post', create));
+    return res.json(success('tech stack', 'post', create));
   } catch (error) {
     res.status(code.badRequestNumb).json(fail(error.message, 'Bad Request', code.badRequestCode, code.badRequestNumb));
   }

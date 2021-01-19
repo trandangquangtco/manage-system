@@ -2,3 +2,4 @@ node_modules
 start.js
 .env
 .env.development
+package-lock.json
