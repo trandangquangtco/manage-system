@@ -43,7 +43,7 @@ describe('test techStack', () => {
     it('success', async () => {
       const techStackModel = sinon.stub(techStack, 'findOne');
       techStackModel.resolves(body);
-      const find = await techStackService.findOneTech();
+      const find = await techStackService.findOneTech({ _id: body._id });
       expect(find).to.be.an('object');
       expect(find).to.have.property('techStack').equal('demo');
       techStackModel.restore();
@@ -57,6 +57,8 @@ describe('test techStack', () => {
       techStackModelFind.resolves(body);
       techStackModelDelete.resolves(body);
       await techStackService.delTech({ _id: body._id });
+      techStackModelFind.restore();
+      techStackModelDelete.restore();
     });
   });
 });

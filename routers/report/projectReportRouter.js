@@ -7,6 +7,6 @@ const router = express();
 
 router.get('/status', authenticate, statusInProject);
 router.get('/projectTypes', authenticate, TypeInProject);
-router.get('/techStacks', authenticate, techStackInProject);
+router.get('/', authenticate, techStackInProject);
 
 export default router;

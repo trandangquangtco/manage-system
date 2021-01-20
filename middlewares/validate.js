@@ -131,7 +131,29 @@ const validateCenter = async (req, res, next) => {
   }
 };
 
+const validateStaff = async (req, res, next) => {
+  try {
+    const staff = joi.array().items(joi.object().keys({
+      staffName: joi.string().required(),
+      birth: joi.date(),
+      ID: joi.string(),
+      phone: joi.string(),
+    }));
+    await staff.validateAsync(req.body);
+    next();
+  } catch (error) {
+    if (error.details) {
+      res.status(code.badRequestNumb).json(fail(error.details, 'Invalid data', 'INVALID_DATA', code.badRequestNumb));
+    } else {
+      res.status(code.internalErrorNumb)
+        .json(fail(
+          error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
+        ));
+    }
+  }
+};
+
 export {
   validateProjectType, validateStatus, validateTechStack, validateCustomer,
-  validateProject, validateCenter,
+  validateProject, validateCenter, validateStaff,
 };

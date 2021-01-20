@@ -18,7 +18,7 @@ const staffSchema = new Schema({
   certificate: Array,
   language: Array,
   techStack: [{
-    // _id: false,
+    _id: false,
     techStack: { type: Schema.Types.ObjectId, ref: 'techStack' },
     experience: String,
   }],

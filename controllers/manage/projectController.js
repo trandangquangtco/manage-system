@@ -11,7 +11,7 @@ const createProject = async (req, res) => {
   try {
     const body = req.body;
     const staff = await findStaff({ _id: body.staff });
-    if (staff.length < 1) {
+    if (staff.length) {
       res.status(code.successNumb).json({
         message: 'staff is not exist',
         error: 'InvalidData',

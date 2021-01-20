@@ -1,12 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable import/no-useless-path-segments */
-/* eslint-disable import/extensions */
-import { findProjectType } from '../../services/category/projectTypeService.js';
-import { findStatus } from '../../services/category/statusService.js';
-import { findProject } from '../../services/manage/projectService.js';
-import { findTech } from '../../services/category/techService.js';
-import { success, fail } from '../../helpers/response.js';
-import * as code from '../../constant/code.js';
+import { findProjectType } from '../../services/category/projectTypeService';
+import { findStatus } from '../../services/category/statusService';
+import { findProject } from '../../services/manage/projectService';
+import { findTech } from '../../services/category/techService';
+import { success, fail } from '../../helpers/response';
+import * as code from '../../constant/code';
 
 const statusInProject = async (req, res) => {
   try {
@@ -16,7 +15,6 @@ const statusInProject = async (req, res) => {
     const queryFrom = req.query.from || '2021-01-01';
     const queryTo = req.query.to || '2021-12-31';
     const condition = await findStatus({
-      status: query.status,
       createdAt: { $gte: queryFrom || '2021-01-01', $lte: queryTo || '2021-12-31' },
     });
     if (condition.length > 0) {
@@ -67,14 +65,17 @@ const TypeInProject = async (req, res) => {
 const techStackInProject = async (req, res) => {
   try {
     const queryTechStack = req.query.techStack;
-    const query = {};
+    const queryStatus = req.query.status;
+    const queryProjectType = req.query.projectType;
+    const queryActive = req.query.active;
+    const query = {
+      createdAt: { $gte: req.query.from || '2021-01-01', $lte: req.query.to || '2021-12-31' },
+    };
     if (queryTechStack) { query.techStack = queryTechStack; }
-    const queryFrom = req.query.from || '2021-01-01';
-    const queryTo = req.query.to || '2021-12-31';
-    const condition = await findTech({
-      techStack: query.techStack,
-      createdAt: { $gte: queryFrom || '2021-01-01', $lte: queryTo || '2021-12-31' },
-    });
+    if (queryStatus) { query.status = queryStatus; }
+    if (queryProjectType) { query.projectType = queryProjectType; }
+    if (queryActive) { query.active = queryActive; }
+    const condition = await findTech(query);
     if (condition.length > 0) {
       const report = await findProject({ techStack: condition[0]._id });
       res.json(success('post', 'report project type', {

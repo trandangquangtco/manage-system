@@ -6,7 +6,7 @@ const addProject = (body) => {
   return project.create(body);
 };
 
-const findProject = (query) => project.find(query).lean();
+const findProject = (query) => project.find(query);
 
 const findProjectFull = (query) => {
   return project.find(query).select('-__v')

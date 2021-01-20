@@ -1,7 +1,7 @@
 /* eslint-disable import/extensions */
 import express from 'express';
 import {
-  techStackInStaff, certificateInStaff, experienceInStaff, projectInStaff,
+  techStackInStaff, certificateInStaff, experienceInStaff, projectInStaff, reportStaff,
 } from '../../controllers/report/staffReport.js';
 import { authenticate } from '../../middlewares/middleware.js';
 // import { findStaffFull } from '../../services/manage/staffService';
@@ -13,10 +13,11 @@ router.get('/techStacks', authenticate, techStackInStaff);
 router.get('/certificates', authenticate, certificateInStaff);
 router.get('/experience', authenticate, experienceInStaff);
 router.get('/projects', authenticate, projectInStaff);
+router.get('/', reportStaff);
 
 router.post('/search', async (req, res) => {
   try {
-    const body = req.body;
+    const { body } = req;
     if (body.techStack) {
       const find = await staff.find({
         'techStack.techStack': body.techStack,

@@ -1,8 +1,9 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-plusplus */
 /* eslint-disable import/extensions */
+import mongoose from 'mongoose';
 import { findStaff } from '../../services/manage/staffService.js';
-import { findTech } from '../../services/category/techService.js';
+import { findOneTech, findTech } from '../../services/category/techService.js';
 import { staff } from '../../models/manage/staffModel.js';
 import { success, fail } from '../../helpers/response.js';
 import * as code from '../../constant/code.js';
@@ -136,6 +137,40 @@ const projectInStaff = async (req, res) => {
   }
 };
 
+const reportStaff = async (req, res) => {
+  try {
+    const query = {};
+    const queryTechStack = req.query.techStack;
+    if (req.query.framework) { query.framework = req.query.framework; }
+    if (req.query.experience) { query.experience = req.query.experience; }
+    if (req.query.project) { query.project = req.query.project; }
+    // if (queryTechStack) { query.techStack = queryTechStack; }
+    if (queryTechStack) {
+      if (queryTechStack.match(/^[0-9a-fA-F]{24}$/)) {
+        query.techStack = queryTechStack;
+      } else {
+        const condition = await findOneTech({ techStack: queryTechStack });
+        query.techStack = mongoose.Types.ObjectId(condition._id);
+      }
+    }
+    const read = await staff.find(
+      (query.project) ? { project: String(query.project) } : { techStack: { $elemMatch: query } },
+    ).populate({
+      path: 'techStack',
+      populate: { path: 'techStack', select: '-__v' },
+    });
+    res.json(success('get', 'report', {
+      total: read.length,
+      data: read,
+    }));
+  } catch (error) {
+    res.status(code.badRequestNumb)
+      .json(
+        fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
+      );
+  }
+};
+
 export {
-  certificateInStaff, techStackInStaff, experienceInStaff, projectInStaff,
+  certificateInStaff, techStackInStaff, experienceInStaff, projectInStaff, reportStaff,
 };
