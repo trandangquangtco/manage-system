@@ -6,6 +6,7 @@ import { project } from '../models/manage/projectModel';
 import * as projectService from '../services/manage/projectService';
 
 const { expect } = chai;
+// const { stub } = sinon;
 const body = {
   _id: 123,
   projectName: 'demo',
@@ -32,7 +33,7 @@ describe('test project', () => {
     });
   });
 
-  describe('get', () => {
+  describe('get all', () => {
     it('success', async () => {
       const projectModel = sinon.stub(project, 'find');
       projectModel.resolves(bodyArr);
@@ -53,14 +54,20 @@ describe('test project', () => {
     });
   });
 
-  // describe('get full', () => {
-  //   it('success', async () => {
-  //     const projectModel = sinon.stub(project, 'find');
-  //     projectModel.resolves(bodyArr);
-  //     const read = await projectService.findProjectFull();
-  //     expect(read).to.be.an('array');
-  //   });
-  // });
+  describe('get full', () => {
+    it('success', async () => {
+      const selectModel = sinon.stub().resolves(body);
+      const populate1 = sinon.stub().returns({ select: selectModel });
+      const populate2 = sinon.stub().returns({ populate: populate1 });
+      const populate3 = sinon.stub().returns({ populate: populate2 });
+      const populate4 = sinon.stub().returns({ populate: populate3 });
+      const populate5 = sinon.stub().returns({ populate: populate4 });
+      const projectModel = sinon.stub(project, 'find').returns({ select: populate5 });
+      const read = await projectService.findProjectFull();
+      expect(read).to.be.an('object');
+      projectModel.restore();
+    });
+  });
 
   describe('delete', () => {
     it('success', async () => {

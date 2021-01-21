@@ -3,7 +3,8 @@ import { customer } from '../../models/category/customerModel.js';
 
 const addCustomer = (body) => customer.create(body);
 
-const findCustomer = (query) => customer.find(query);
+const findCustomer = (query, limit, page) => customer.find(query)
+  .limit(limit).skip(limit * (page - 1));
 
 const findOneCustomer = (id) => customer.findOne(id);
 

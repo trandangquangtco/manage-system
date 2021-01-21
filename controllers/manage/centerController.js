@@ -6,6 +6,7 @@ import {
 import { success, fail } from '../../helpers/response.js';
 import { findStaff } from '../../services/manage/staffService.js';
 import * as code from '../../constant/code.js';
+import { logger } from '../../helpers/logger';
 
 const createCenter = async (req, res) => {
   try {
@@ -22,6 +23,7 @@ const createCenter = async (req, res) => {
     }
   } catch (error) {
     res.status(code.badRequestNumb).json(fail(error.message, 'Bad Request', code.badRequestCode, code.badRequestNumb));
+    logger.error(error.message);
   }
 };
 
@@ -37,6 +39,7 @@ const readCenter = async (req, res) => {
       .json(fail(
         error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
       ));
+    logger.error(error.message);
   }
 };
 
@@ -48,6 +51,7 @@ const readCenterFull = async (req, res) => {
     }
     res.json(success('get', 'center', read));
   } catch (error) {
+    logger.error(error.message);
     res.status(code.internalErrorNumb)
       .json(fail(
         error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
@@ -64,6 +68,7 @@ const readOneCenter = async (req, res) => {
       res.json(success('get', 'center', readOne));
     }
   } catch (error) {
+    logger.error(error.message);
     res.status(code.badRequestNumb)
       .json(
         fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
@@ -86,6 +91,7 @@ const updateCenter = async (req, res) => {
       .json(
         fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
       );
+    logger.error(error.message);
   }
 };
 
@@ -99,6 +105,7 @@ const deleteCenter = async (req, res) => {
     }
     res.json(success('delete', 'center', remove));
   } catch (error) {
+    logger.error(error.message);
     res.status(code.badRequestNumb)
       .json(
         fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),

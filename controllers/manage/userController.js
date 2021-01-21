@@ -6,6 +6,7 @@ import {
 } from '../../services/manage/userService.js';
 import { success, fail } from '../../helpers/response.js';
 import * as code from '../../constant/code.js';
+import { logger } from '../../helpers/logger';
 
 const createUser = async (req, res) => {
   try {
@@ -13,6 +14,7 @@ const createUser = async (req, res) => {
     res.json(success('post', 'user', create));
   } catch (error) {
     res.status(code.badRequestNumb).json(fail(error.message, 'Bad Request', code.badRequestCode, code.badRequestNumb));
+    logger.error(error.message);
   }
 };
 
@@ -28,6 +30,7 @@ const readUser = async (req, res) => {
       .json(fail(
         error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
       ));
+    logger.error(error.message);
   }
 };
 
@@ -40,6 +43,7 @@ const readOneUser = async (req, res) => {
       res.json(success('get', 'user', readOne));
     }
   } catch (error) {
+    logger.error(error.message);
     res.status(code.badRequestNumb)
       .json(
         fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
@@ -82,6 +86,7 @@ const updateUser = async (req, res) => {
           res.json(success('put', 'user', update));
         }
       } catch (error) {
+        logger.error(error.message);
         res.status(code.badRequestNumb)
           .json(
             fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
@@ -89,6 +94,7 @@ const updateUser = async (req, res) => {
       }
     }
   } catch (error) {
+    logger.error(error.message);
     res.status(code.badRequestNumb)
       .json(
         fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
@@ -110,6 +116,7 @@ const deleteUser = async (req, res) => {
       .json(
         fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
       );
+    logger.error(error.message);
   }
 };
 

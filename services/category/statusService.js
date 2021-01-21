@@ -3,7 +3,7 @@ import { status } from '../../models/category/statusModel';
 
 const addStatus = (body) => status.create(body);
 
-const findStatus = (query) => status.find(query).lean();
+const findStatus = (query) => status.find(query);
 
 const findOneStatus = (id) => status.findOne(id);
 

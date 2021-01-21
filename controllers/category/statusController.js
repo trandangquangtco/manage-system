@@ -5,6 +5,7 @@ import {
 } from '../../services/category/statusService.js';
 import { fail, success } from '../../helpers/response.js';
 import * as code from '../../constant/code.js';
+import { logger } from '../../helpers/logger';
 
 const createStatus = async (req, res) => {
   try {
@@ -13,6 +14,7 @@ const createStatus = async (req, res) => {
     res.json(success('status', 'post', create));
   } catch (error) {
     res.status(code.badRequestNumb).json(fail(error.message, 'Bad Request', code.badRequestCode, code.badRequestNumb));
+    logger.error(error.message);
   }
 };
 
@@ -25,6 +27,7 @@ const readStatus = async (req, res) => {
       res.json(success('status', 'get', read));
     }
   } catch (error) {
+    logger.error(error.message);
     res.status(code.internalErrorNumb)
       .json(fail(
         error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
@@ -45,6 +48,7 @@ const readOneStatus = async (req, res) => {
       .json(
         fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
       );
+    logger.error(error.message);
   }
 };
 
@@ -59,6 +63,7 @@ const updateStatus = async (req, res) => {
       res.json(success('status', 'put', update));
     }
   } catch (error) {
+    logger.error(error.message);
     res.status(code.badRequestNumb)
       .json(
         fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
@@ -76,6 +81,7 @@ const deleteStatus = async (req, res) => {
     }
     res.json(success('status', 'delete', remove));
   } catch (error) {
+    logger.error(error.message);
     res.status(code.badRequestNumb)
       .json(
         fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),

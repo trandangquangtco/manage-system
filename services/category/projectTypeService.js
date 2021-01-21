@@ -2,7 +2,8 @@ import { projectType } from '../../models/category/projectTypeModel';
 
 const addProjectType = (body) => projectType.create(body);
 
-const findProjectType = (query) => projectType.find(query);
+const findProjectType = (query, limit, page) => projectType.find(query)
+  .limit(limit).skip(limit * (page - 1));
 
 const findOneProjectType = (id) => projectType.findOne(id);
 

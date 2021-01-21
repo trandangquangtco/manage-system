@@ -4,10 +4,12 @@ import { staff } from '../../models/manage/staffModel.js';
 
 const addStaff = (body) => staff.create(body);
 
-const findStaff = (query) => staff.find(query);
+const findStaff = (query) => staff.find(query).lean();
 
 const findStaffFull = (query) => {
-  return staff.find(query).select('-__v').populate('status', '-__v')
+  return staff.find(query)
+    .select('-__v')
+    .populate('status', '-__v')
     .populate({
       path: 'techStack', populate: { path: 'techStack', select: '-__v' },
     })
@@ -15,8 +17,7 @@ const findStaffFull = (query) => {
       path: 'project',
       select: '-staff -__v',
       populate: { path: 'projectType status techStack', select: '-__v' },
-    })
-    .lean();
+    });
 };
 
 const findOneStaff = (id) => staff.findOne(id);

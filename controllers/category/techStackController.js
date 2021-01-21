@@ -4,13 +4,15 @@ import {
 } from '../../services/category/techService.js';
 import { fail, success } from '../../helpers/response.js';
 import * as code from '../../constant/code.js';
+import { logger } from '../../helpers/logger';
 
 const createTechStack = async (req, res) => {
   try {
     const create = await addTech(req.body);
-    return res.json(success('tech stack', 'post', create));
+    res.json(success('tech stack', 'post', create));
   } catch (error) {
     res.status(code.badRequestNumb).json(fail(error.message, 'Bad Request', code.badRequestCode, code.badRequestNumb));
+    logger.error(error.message);
   }
 };
 
@@ -27,6 +29,7 @@ const readTechStack = async (req, res) => {
       .json(fail(
         error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
       ));
+    logger.error(error.message);
   }
 };
 
@@ -39,6 +42,7 @@ const readOneTechStack = async (req, res) => {
       res.json(success('Tech Stack', 'get', readOne));
     }
   } catch (error) {
+    logger.error(error.message);
     res.status(code.badRequestNumb)
       .json(
         fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
@@ -57,6 +61,7 @@ const updateTechStack = async (req, res) => {
       res.json(success('Tech Stack', 'put', update));
     }
   } catch (error) {
+    logger.error(error.message);
     res.status(code.badRequestNumb)
       .json(
         fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
@@ -78,6 +83,7 @@ const deleteTechStack = async (req, res) => {
       .json(
         fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
       );
+    logger.error(error.message);
   }
 };
 

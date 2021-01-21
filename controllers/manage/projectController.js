@@ -6,12 +6,13 @@ import {
 import { findStaff } from '../../services/manage/staffService.js';
 import { success, fail } from '../../helpers/response.js';
 import * as code from '../../constant/code.js';
+import { logger } from '../../helpers/logger';
 
 const createProject = async (req, res) => {
   try {
     const body = req.body;
     const staff = await findStaff({ _id: body.staff });
-    if (staff.length) {
+    if (staff.length < 1) {
       res.status(code.successNumb).json({
         message: 'staff is not exist',
         error: 'InvalidData',
@@ -22,6 +23,7 @@ const createProject = async (req, res) => {
     }
   } catch (error) {
     res.status(code.badRequestNumb).json(fail(error.message, 'Bad Request', code.badRequestCode, code.badRequestNumb));
+    logger.error(error.message);
   }
 };
 
@@ -37,6 +39,7 @@ const readProject = async (req, res) => {
       .json(fail(
         error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
       ));
+    logger.error(error.message);
   }
 };
 
@@ -48,6 +51,7 @@ const readProjectFull = async (req, res) => {
     }
     res.json(success('get', 'project', read));
   } catch (error) {
+    logger.error(error.message);
     res.status(code.internalErrorNumb)
       .json(fail(
         error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
@@ -58,12 +62,9 @@ const readProjectFull = async (req, res) => {
 const readOneProject = async (req, res) => {
   try {
     const readOne = await findOneProject({ _id: req.params.id });
-    if (!readOne) {
-      res.json(success('get', 'project', code.noValidFound));
-    } else {
-      res.json(success('get', 'project', readOne));
-    }
+    res.json(success('get', 'project', readOne));
   } catch (error) {
+    logger.error(error.message);
     res.status(code.badRequestNumb)
       .json(
         fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
@@ -86,6 +87,7 @@ const updateProject = async (req, res) => {
       .json(
         fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
       );
+    logger.error(error.message);
   }
 };
 
@@ -99,6 +101,7 @@ const deleteProject = async (req, res) => {
     }
     res.json(success('delete', 'project', remove));
   } catch (error) {
+    logger.error(error.message);
     res.status(code.badRequestNumb)
       .json(
         fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),

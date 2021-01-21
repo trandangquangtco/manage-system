@@ -1,6 +1,6 @@
 /* eslint-disable arrow-body-style */
 /* eslint-disable import/extensions */
-import { project } from '../../models/manage/projectModel.js';
+import { project } from '../../models/manage/projectModel';
 
 const addProject = (body) => {
   return project.create(body);
@@ -14,7 +14,6 @@ const findProjectFull = (query) => {
     .populate('staff', '-__v')
     .populate('status', '-__v')
     .populate('techStack', '-__v')
-    .lean();
 };
 
 const findOneProject = (id) => {

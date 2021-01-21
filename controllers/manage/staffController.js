@@ -4,6 +4,7 @@ import {
 } from '../../services/manage/staffService.js';
 import { success, fail } from '../../helpers/response.js';
 import * as code from '../../constant/code.js';
+import { logger } from '../../helpers/logger';
 
 const createStaff = async (req, res) => {
   try {
@@ -11,6 +12,7 @@ const createStaff = async (req, res) => {
     res.json(success('post', 'staff', create));
   } catch (error) {
     res.status(code.badRequestNumb).json(fail(error.message, 'Bad Request', code.badRequestCode, code.badRequestNumb));
+    logger.error(error.message);
   }
 };
 
@@ -26,6 +28,7 @@ const readStaff = async (req, res) => {
       .json(fail(
         error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
       ));
+    logger.error(error.message);
   }
 };
 
@@ -37,6 +40,7 @@ const readStaffFull = async (req, res) => {
     }
     res.json(read);
   } catch (error) {
+    logger.error(error.message);
     res.status(code.internalErrorNumb)
       .json(fail(
         error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
@@ -53,6 +57,7 @@ const readOneStaff = async (req, res) => {
       res.json(success('get', 'staff', readOne));
     }
   } catch (error) {
+    logger.error(error.message);
     res.status(code.badRequestNumb)
       .json(
         fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
@@ -75,6 +80,7 @@ const updateStaff = async (req, res) => {
       .json(
         fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
       );
+    logger.error(error.message);
   }
 };
 
@@ -88,6 +94,7 @@ const deleteStaff = async (req, res) => {
     }
     res.json(success('delete', 'staff', remove));
   } catch (error) {
+    logger.error(error.message);
     res.status(code.badRequestNumb)
       .json(
         fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
