@@ -5,12 +5,12 @@ import * as code from '../constant/code.js';
 
 const validateProjectType = async (req, res, next) => {
   try {
-    const projectType = joi.array().items(joi.object().keys({
+    const projectType = joi.object({
       projectType: joi.string().required(),
       describe: joi.any(),
       active: joi.boolean(),
       important: joi.number(),
-    }));
+    });
     await projectType.validateAsync(req.body);
     next();
   } catch (error) {
@@ -69,12 +69,12 @@ const validateTechStack = async (req, res, next) => {
 
 const validateCustomer = async (req, res, next) => {
   try {
-    const customer = joi.array().items(joi.object().keys({
+    const customer = joi.object({
       customer: joi.string().required(),
       describe: joi.any(),
       active: joi.boolean(),
       important: joi.number(),
-    }));
+    });
     await customer.validateAsync(req.body);
     next();
   } catch (error) {
@@ -91,11 +91,11 @@ const validateCustomer = async (req, res, next) => {
 
 const validateProject = async (req, res, next) => {
   try {
-    const project = joi.array().items(joi.object().keys({
+    const project = joi.object({
       projectName: joi.string().required(),
       information: joi.any(),
       center: joi.string(),
-    }));
+    });
     await project.validateAsync(req.body);
     next();
   } catch (error) {
@@ -112,11 +112,10 @@ const validateProject = async (req, res, next) => {
 
 const validateCenter = async (req, res, next) => {
   try {
-    const center = joi.array().items(joi.object().keys({
+    const center = joi.object({
       centerName: joi.string().required(),
       information: joi.any(),
-      center: joi.string(),
-    }));
+    });
     await center.validateAsync(req.body);
     next();
   } catch (error) {
@@ -133,12 +132,12 @@ const validateCenter = async (req, res, next) => {
 
 const validateStaff = async (req, res, next) => {
   try {
-    const staff = joi.array().items(joi.object().keys({
+    const staff = joi.object({
       staffName: joi.string().required(),
       birth: joi.date(),
       ID: joi.string(),
       phone: joi.string(),
-    }));
+    });
     await staff.validateAsync(req.body);
     next();
   } catch (error) {

@@ -144,7 +144,6 @@ const reportStaff = async (req, res) => {
     if (req.query.framework) { query.framework = req.query.framework; }
     if (req.query.experience) { query.experience = req.query.experience; }
     if (req.query.project) { query.project = req.query.project; }
-    // if (queryTechStack) { query.techStack = queryTechStack; }
     if (queryTechStack) {
       if (queryTechStack.match(/^[0-9a-fA-F]{24}$/)) {
         query.techStack = queryTechStack;

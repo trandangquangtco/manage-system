@@ -2,7 +2,7 @@
 /* eslint-disable import/extensions */
 import {
   addProject, findProject, findOneProject, putProject, delProject, findProjectFull,
-} from '../../services/manage/projectService.js';
+} from '../../services/manage/projectService';
 import { findStaff } from '../../services/manage/staffService.js';
 import { success, fail } from '../../helpers/response.js';
 import * as code from '../../constant/code.js';

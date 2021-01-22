@@ -13,7 +13,7 @@ const findProjectFull = (query) => {
     .populate('projectType', '-__v')
     .populate('staff', '-__v')
     .populate('status', '-__v')
-    .populate('techStack', '-__v')
+    .populate('techStack', '-__v');
 };
 
 const findOneProject = (id) => {

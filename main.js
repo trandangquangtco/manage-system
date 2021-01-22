@@ -16,8 +16,8 @@ import projectReportRouter from './routers/report/projectReportRouter';
 import staffReportRouter from './routers/report/staffReportRouter';
 
 const app = express();
-// dotenv.config({ path: `./.env.${process.env.NODE_ENV}` });
-dotenv.config();
+dotenv.config({ path: `./.env.${process.env.NODE_ENV}` });
+// dotenv.config();
 mongoose.connect('mongodb://localhost:27017/vmoprj', {
   useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false,
 });

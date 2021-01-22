@@ -8,7 +8,7 @@ import { validateStatus } from '../../middlewares/validate.js';
 
 const router = express.Router();
 
-router.post('/status', authenticate, createStatus);
+router.post('/status', authenticate, validateStatus, createStatus);
 router.get('/status', authenticate, readStatus);
 router.get('/status/:id', authenticate, readOneStatus);
 router.put('/status/:id', authenticate, updateStatus);

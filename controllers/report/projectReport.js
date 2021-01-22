@@ -2,10 +2,11 @@
 /* eslint-disable import/no-useless-path-segments */
 import { findProjectType } from '../../services/category/projectTypeService';
 import { findStatus } from '../../services/category/statusService';
-import { findProject } from '../../services/manage/projectService';
+import { findProject, findProjectFull } from '../../services/manage/projectService';
 import { findTech } from '../../services/category/techService';
 import { success, fail } from '../../helpers/response';
 import * as code from '../../constant/code';
+import { logger } from '../../helpers/logger';
 
 const statusInProject = async (req, res) => {
   try {
@@ -62,7 +63,7 @@ const TypeInProject = async (req, res) => {
   }
 };
 
-const techStackInProject = async (req, res) => {
+const reportProject = async (req, res) => {
   try {
     const queryTechStack = req.query.techStack;
     const queryStatus = req.query.status;
@@ -75,17 +76,23 @@ const techStackInProject = async (req, res) => {
     if (queryStatus) { query.status = queryStatus; }
     if (queryProjectType) { query.projectType = queryProjectType; }
     if (queryActive) { query.active = queryActive; }
-    const condition = await findTech(query);
-    if (condition.length > 0) {
-      const report = await findProject({ techStack: condition[0]._id });
-      res.json(success('post', 'report project type', {
-        amount: report.length,
-        data: report,
-      }));
-    } else {
-      res.json(success('post', 'report', null));
-    }
+    const report = await findProjectFull(query);
+    res.json(success('post', 'report project type', {
+      amount: report.length,
+      data: report,
+    }));
+    // const condition = await findTech(query);
+    // if (condition.length > 0) {
+    //   const report = await findProjectFull(query);
+    //   res.json(success('post', 'report project type', {
+    //     amount: report.length,
+    //     data: report,
+    //   }));
+    // } else {
+    //   res.json(success('post', 'report', null));
+    // }
   } catch (error) {
+    logger.error(error.message);
     res.status(code.badRequestNumb)
       .json(
         fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
@@ -94,5 +101,5 @@ const techStackInProject = async (req, res) => {
 };
 
 export {
-  statusInProject, TypeInProject, techStackInProject,
+  statusInProject, TypeInProject, reportProject,
 };

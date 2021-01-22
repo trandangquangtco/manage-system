@@ -25,7 +25,7 @@ const readCustomer = async (req, res) => {
       input.page = 1;
     }
     const read = await findCustomer(
-      query, parseInt(Math.ceil(input.limit)) || 3, parseInt(Math.ceil(input.page)),
+      query, parseInt(Math.ceil(input.limit)) || 3, parseInt(Math.ceil(input.page)) || 1,
     );
     if (read.length < 1) {
       res.json(success('customer', 'get', code.noValidFound));
