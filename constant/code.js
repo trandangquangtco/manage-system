@@ -4,8 +4,8 @@ const notFoundNumb = 404;
 const badRequestNumb = 400;
 const unAuthorizeNumb = 401;
 
-const badRequestCode = 'Bad_Request';
-const internalErrorCode = 'InternalServerError';
+const badRequestCode = 'BAD_REQUEST';
+const internalErrorCode = 'INTERNAL_SERVER_ERROR';
 
 const noValidFound = [];
 const internalError = 'Internal Server Error';

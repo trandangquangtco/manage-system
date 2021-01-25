@@ -5,7 +5,7 @@ import _ from 'lodash';
 import {
   addProjectType, findProjectType, findOneProjectType, putProjectType, delProjectType,
 } from '../../services/category/projectTypeService';
-import { fail, success } from '../../helpers/response';
+import { fail } from '../../helpers/response';
 import * as code from '../../constant/code';
 import { logger } from '../../helpers/logger';
 
@@ -58,7 +58,7 @@ const readProjectType = async (req, res) => {
 const readOneProjectType = async (req, res) => {
   try {
     const readOne = await findOneProjectType({ _id: req.params.id });
-    res.json(success('project type', 'get', readOne));
+    res.json(readOne);
   } catch (error) {
     logger.error(error.message);
     res.status(code.badRequestNumb)
@@ -87,7 +87,7 @@ const updateProjectType = async (req, res) => {
           code.badRequest, 'data not found', code.badRequestCode, code.badRequestNumb,
         ));
       } else {
-        res.json(success('project type', 'put', update));
+        res.json(update);
       }
     }
   } catch (error) {
@@ -108,7 +108,7 @@ const deleteProjectType = async (req, res) => {
         code.badRequest, 'data not found', code.badRequestCode, code.badRequestNumb,
       ));
     }
-    res.json(success('projectType', 'delete', remove));
+    res.json(remove);
   } catch (error) {
     logger.error(error.message);
     res.status(code.badRequestNumb)

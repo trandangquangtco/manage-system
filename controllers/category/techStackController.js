@@ -1,29 +1,53 @@
+/* eslint-disable radix */
 /* eslint-disable import/extensions */
+import joi from 'joi';
+import _ from 'lodash';
 import {
   addTech, findTech, findOneTech, putTech, delTech,
 } from '../../services/category/techService.js';
-import { fail, success } from '../../helpers/response.js';
+import { fail } from '../../helpers/response.js';
 import * as code from '../../constant/code.js';
 import { logger } from '../../helpers/logger';
 
 const createTechStack = async (req, res) => {
   try {
-    const create = await addTech(req.body);
-    res.json(success('tech stack', 'post', create));
+    const { body } = req;
+    const input = joi.object({
+      projectType: joi.string().required(),
+      describe: joi.any(),
+      active: joi.boolean(),
+      important: joi.number(),
+    });
+    const condition = input.validate(body);
+    if (condition.error) {
+      res.status(code.badRequestNumb).json(
+        fail(condition.error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
+      );
+    } else {
+      const create = await addTech(req.body);
+      res.json(create);
+    }
   } catch (error) {
-    res.status(code.badRequestNumb).json(fail(error.message, 'Bad Request', code.badRequestCode, code.badRequestNumb));
+    res.status(code.internalErrorNumb)
+      .json(fail(
+        error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
+      ));
     logger.error(error.message);
   }
 };
 
 const readTechStack = async (req, res) => {
   try {
-    const read = await findTech(req.query);
-    if (read.length < 1) {
-      res.json(success('Tech Stack', 'get', code.noValidFound));
-    } else {
-      res.json(success('Tech Stack', 'get', read));
+    const input = req.query;
+    const query = _.omit(input, ['page', 'limit', 'from', 'to']);
+    query.createdAt = { $gte: input.from || '2021-01-01', $lte: input.to || '2021-12-31' };
+    if (input.page < 1) {
+      input.page = 1;
     }
+    const read = await findTech(
+      query, input.limit || 3, parseInt(Math.ceil(input.page)),
+    );
+    res.json(read);
   } catch (error) {
     res.status(code.internalErrorNumb)
       .json(fail(
@@ -36,11 +60,7 @@ const readTechStack = async (req, res) => {
 const readOneTechStack = async (req, res) => {
   try {
     const readOne = await findOneTech({ _id: req.params.id });
-    if (!readOne) {
-      res.json(success('Tech Stack', 'get', code.noValidFound));
-    } else {
-      res.json(success('Tech Stack', 'get', readOne));
-    }
+    res.json(readOne);
   } catch (error) {
     logger.error(error.message);
     res.status(code.badRequestNumb)
@@ -58,7 +78,7 @@ const updateTechStack = async (req, res) => {
         code.badRequest, 'data not found', code.badRequestCode, code.badRequestNumb,
       ));
     } else {
-      res.json(success('Tech Stack', 'put', update));
+      res.json(update);
     }
   } catch (error) {
     logger.error(error.message);
@@ -77,7 +97,7 @@ const deleteTechStack = async (req, res) => {
         code.badRequest, 'data not found', code.badRequestCode, code.badRequestNumb,
       ));
     }
-    res.json(success('Tech stack', 'delete', remove));
+    res.json(remove);
   } catch (error) {
     res.status(code.badRequestNumb)
       .json(
