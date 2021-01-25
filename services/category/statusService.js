@@ -11,7 +11,7 @@ const addStatus = async (body) => {
     return success('post', 'status', create);
   } catch (error) {
     logger.error(error.message);
-    return fail(error.message, 'Bad Request', 'BAD_REQUEST', 400);
+    return fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb);
   }
 };
 
@@ -23,7 +23,9 @@ const findStatus = async (query, limit, page) => {
     return success('get', 'status', read);
   } catch (error) {
     logger.error(error.message);
-    return fail(error.message, 'Bad Request', 'BAD_REQUEST', 400);
+    return fail(
+      error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
+    );
   }
 };
 
@@ -33,7 +35,7 @@ const findOneStatus = async (id) => {
     return success('get', 'status', read);
   } catch (error) {
     logger.error(error.message);
-    return fail(error.message, 'Bad Request', 'BAD_REQUEST', 400);
+    return fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb);
   }
 };
 
@@ -48,7 +50,7 @@ const putStatus = async (id, body) => {
     return success('put', 'status', update);
   } catch (error) {
     logger.error(error.message);
-    return fail(error.message, 'Bad Request', 'BAD_REQUEST', 400);
+    return fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb);
   }
 };
 
@@ -61,7 +63,7 @@ const delStatus = async (id) => {
     return success('delete', 'status', remove);
   } catch (error) {
     logger.error(error.message);
-    return fail(error.message, 'Bad Request', 'BAD_REQUEST', 400);
+    return fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb);
   }
 };
 

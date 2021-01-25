@@ -24,17 +24,18 @@ describe('test techStack', () => {
       const techStackModel = sinon.stub(techStack, 'create');
       techStackModel.resolves(body);
       const create = await techStackService.addTech(body);
-      expect(create).to.have.property('techStack').equal('demo');
+      expect(create.status).to.equal(200);
       techStackModel.restore();
     });
   });
 
   describe('get', () => {
     it('success', async () => {
-      const techStackModel = sinon.stub(techStack, 'find');
-      techStackModel.resolves(bodyArr);
+      const limitModel = sinon.stub().resolves(bodyArr);
+      const skipModel = sinon.stub().returns({ skip: limitModel });
+      const techStackModel = sinon.stub(techStack, 'find').returns({ limit: skipModel });
       const find = await techStackService.findTech();
-      expect(find).to.be.an('array');
+      expect(find.status).to.equal(200);
       techStackModel.restore();
     });
   });
@@ -44,8 +45,7 @@ describe('test techStack', () => {
       const techStackModel = sinon.stub(techStack, 'findOne');
       techStackModel.resolves(body);
       const find = await techStackService.findOneTech({ _id: body._id });
-      expect(find).to.be.an('object');
-      expect(find).to.have.property('techStack').equal('demo');
+      expect(find.status).to.equal(200);
       techStackModel.restore();
     });
   });

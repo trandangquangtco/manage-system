@@ -22,7 +22,9 @@ const findTech = async (query, limit, page) => {
     return success('get', 'tech stack', read);
   } catch (error) {
     logger.error(error.message);
-    return fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb);
+    return fail(
+      error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
+    );
   }
 };
 

@@ -32,27 +32,38 @@ describe('test status', () => {
       const statusModel = sinon.stub(status, 'create');
       statusModel.resolves(data);
       const create = await statusService.addStatus(data);
-      expect(create).to.be.an('object');
-      expect(create).to.have.property('status');
+      expect(create.status).to.equal(200);
       statusModel.restore();
     });
   });
 
-  describe('test get', () => {
-    it('get', async () => {
-      const statusModel = sinon.stub(status, 'find');
-      statusModel.resolves([data]);
-      const find = await statusService.findStatus(data);
-      expect(find).to.be.an('array');
+  describe('test get all', () => {
+    it('success', async () => {
+      const limitModel = sinon.stub().resolves([data]);
+      const skipModel = sinon.stub().returns({ skip: limitModel });
+      const statusModel = sinon.stub(status, 'find').returns({ limit: skipModel });
+      const find = await statusService.findStatus();
+      expect(find.status).to.equal(200);
+      statusModel.restore();
+    });
+
+    it('fail', async () => {
+      const limitModel = sinon.stub().resolves([data]);
+      const skipModel = sinon.stub().returns({ skip: limitModel });
+      const statusModel = sinon.stub(status, 'find').returns({ limit: skipModel });
+      statusModel.resolves(data);
+      const find = await statusService.findStatus();
+      expect(find.status).to.equal(500);
       statusModel.restore();
     });
   });
 
-  describe('test get', () => {
+  describe('test get one', () => {
     it('get', async () => {
       const statusModel = sinon.stub(status, 'findOne');
       statusModel.resolves(data);
-      const find = await statusService.findOneStatus(data);
+      const find = await statusService.findOneStatus();
+      expect(find.status).to.equal(200);
       expect(find).to.be.an('object');
       statusModel.restore();
     });
@@ -62,7 +73,7 @@ describe('test status', () => {
     it('get', async () => {
       const statusModel = sinon.stub(status, 'deleteOne');
       statusModel.resolves(data);
-      const del = await statusService.delStatus(data);
+      const del = await statusService.delStatus({ _id: data._id });
       expect(del).to.be.an('object');
       statusModel.restore();
     });

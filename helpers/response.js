@@ -7,14 +7,6 @@ const success = (method, title, data) => {
     status: 200,
   });
 };
-const baseResponse = (status, successStatus, message, msgKey = '') => ({
-  status,
-  data: {
-    success: successStatus,
-    message,
-    msgKey,
-  },
-});
 
 const login = (token, refresh) => ({
   message: 'login success',
@@ -34,5 +26,5 @@ const fail = (error, message, msgCode, status) => ({
 });
 
 export {
-  login, success, fail, baseResponse,
+  login, success, fail,
 };

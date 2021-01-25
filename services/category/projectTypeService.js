@@ -10,7 +10,7 @@ const addProjectType = async (body) => {
     return success('post', 'project type', create);
   } catch (error) {
     logger.error(error.message);
-    return fail(error.message, 'Bad Request', 'BAD_REQUEST', 400);
+    return fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb);
   }
 };
 
@@ -21,7 +21,9 @@ const findProjectType = async (query, limit, page) => {
       .skip(limit * (page - 1));
     return success('get', 'project type', read);
   } catch (error) {
-    return fail(error.message, 'Bad Request', 'BAD_REQUEST', 400);
+    return fail(
+      error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
+    );
   }
 };
 
@@ -31,7 +33,7 @@ const findOneProjectType = async (id) => {
     return success('get', 'project type', read);
   } catch (error) {
     logger.error(error.message);
-    return fail(error.message, 'Bad Request', 'BAD_REQUEST', 400);
+    return fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb);
   }
 };
 
@@ -46,7 +48,7 @@ const putProjectType = async (id, body) => {
     return success('put', 'project type', update);
   } catch (error) {
     logger.error(error.message);
-    return fail(error.message, 'Bad Request', 'BAD_REQUEST', 400);
+    return fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb);
   }
 };
 
@@ -59,7 +61,7 @@ const delProjectType = async (id) => {
     return success('delete', 'project type', remove);
   } catch (error) {
     logger.error(error.message);
-    return fail(error.message, 'Bad Request', 'BAD_REQUEST', 400);
+    return fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb);
   }
 };
 

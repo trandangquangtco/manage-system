@@ -1,30 +1,20 @@
 {
-  message: 'E11000 duplicate key error collection: vmoprj.projectType index: projectType_1 dup key: { projectType: "OS1" }',
+  message: '_techStackModel.techStack.find(...).limit is not a function',
   level: 'error',
-  timestamp: '2021-01-24 12:04:16'
+  timestamp: '2021-01-25 20:06:33'
 }
 {
-  message: '"customer" is not allowed to be empty',
+  message: 'Cast to date failed for value "abc" at path "createdAt" for model "status"',
   level: 'error',
-  timestamp: '2021-01-25 14:45:06'
+  timestamp: '2021-01-25 20:45:40'
 }
 {
-  message: 'customer validation failed: customer: Path `customer` is required.',
+  message: '_statusModel.status.find(...).limit is not a function',
   level: 'error',
-  timestamp: '2021-01-25 14:55:28'
+  timestamp: '2021-01-25 21:27:59'
 }
 {
-  message: 'Cast to Boolean failed for value "false111" at path "active"',
+  message: '_statusModel.status.find(...).limit is not a function',
   level: 'error',
-  timestamp: '2021-01-25 15:07:16'
-}
-{
-  message: 'E11000 duplicate key error collection: vmoprj.customer index: customer_1 dup key: { customer: "customer1" }',
-  level: 'error',
-  timestamp: '2021-01-25 15:08:45'
-}
-{
-  message: 'E11000 duplicate key error collection: vmoprj.customer index: customer_1 dup key: { customer: "customer1" }',
-  level: 'error',
-  timestamp: '2021-01-25 15:15:46'
+  timestamp: '2021-01-25 21:29:56'
 }
