@@ -72,13 +72,27 @@ const readOneTechStack = async (req, res) => {
 
 const updateTechStack = async (req, res) => {
   try {
-    const update = await putTech({ _id: req.params.id }, req.body);
-    if (update == null) {
-      res.json(fail(
-        code.badRequest, 'data not found', code.badRequestCode, code.badRequestNumb,
-      ));
+    const { body } = req;
+    const input = joi.object({
+      projectType: joi.string(),
+      describe: joi.any(),
+      active: joi.boolean(),
+      important: joi.number(),
+    });
+    const condition = input.validate(body);
+    if (condition.error) {
+      res.status(code.badRequestNumb).json(
+        fail(condition.error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
+      );
     } else {
-      res.json(update);
+      const update = await putTech({ _id: req.params.id }, body);
+      if (update == null) {
+        res.json(fail(
+          code.badRequest, 'data not found', code.badRequestCode, code.badRequestNumb,
+        ));
+      } else {
+        res.json(update);
+      }
     }
   } catch (error) {
     logger.error(error.message);

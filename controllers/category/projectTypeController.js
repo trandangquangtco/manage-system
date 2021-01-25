@@ -79,7 +79,9 @@ const updateProjectType = async (req, res) => {
     });
     const condition = input.validate(body);
     if (condition.error) {
-      res.status(code.badRequestNumb).json(fail(condition.error.message, 'Bad Request', code.badRequestCode, code.badRequestNumb));
+      res.status(code.badRequestNumb).json(
+        fail(condition.error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
+      );
     } else {
       const update = await putProjectType({ _id: req.params.id }, body);
       if (update == null) {
