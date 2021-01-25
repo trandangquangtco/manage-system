@@ -1,6 +1,7 @@
 /* eslint-disable radix */
 /* eslint-disable prefer-destructuring */
 import _ from 'lodash';
+import joi from 'joi';
 import {
   addStatus, findOneStatus, findStatus, putStatus, delStatus,
 } from '../../services/category/statusService';
@@ -11,8 +12,19 @@ import { logger } from '../../helpers/logger';
 const createStatus = async (req, res) => {
   try {
     const body = req.body;
-    const create = await addStatus(body);
-    res.json(create);
+    const input = joi.object({
+      customer: joi.string(),
+      describe: joi.string(),
+      active: joi.boolean(),
+      important: joi.number(),
+    });
+    const condition = input.validate(body);
+    if (condition.error) {
+      res.status(code.badRequestNumb).json(fail(condition.error.message, 'Bad Request', code.badRequestCode, code.badRequestNumb));
+    } else {
+      const create = await addStatus(body);
+      res.json(create);
+    }
   } catch (error) {
     res.status(code.internalErrorNumb)
       .json(fail(

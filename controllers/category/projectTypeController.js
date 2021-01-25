@@ -1,5 +1,6 @@
 /* eslint-disable radix */
 /* eslint-disable prefer-destructuring */
+import joi from 'joi';
 import _ from 'lodash';
 import {
   addProjectType, findProjectType, findOneProjectType, putProjectType, delProjectType,
@@ -11,8 +12,19 @@ import { logger } from '../../helpers/logger';
 const createProjectType = async (req, res) => {
   try {
     const body = req.body;
-    const create = await addProjectType(body);
-    res.json(create);
+    const input = joi.object({
+      projectType: joi.string().required(),
+      describe: joi.any(),
+      active: joi.boolean(),
+      important: joi.number(),
+    });
+    const condition = input.validate(body);
+    if (condition.error) {
+      res.status(code.badRequestNumb).json(fail(condition.error.message, 'Bad Request', code.badRequestCode, code.badRequestNumb));
+    } else {
+      const create = await addProjectType(body);
+      res.json(create);
+    }
   } catch (error) {
     logger.error(error.message);
     res.status(code.internalErrorNumb)
@@ -58,14 +70,25 @@ const readOneProjectType = async (req, res) => {
 
 const updateProjectType = async (req, res) => {
   try {
-    const id = req.params.id;
-    const update = await putProjectType({ _id: id }, req.body);
-    if (update == null) {
-      res.json(fail(
-        code.badRequest, 'data not found', code.badRequestCode, code.badRequestNumb,
-      ));
+    const body = req.body;
+    const input = joi.object({
+      projectType: joi.string(),
+      describe: joi.any(),
+      active: joi.boolean(),
+      important: joi.number(),
+    });
+    const condition = input.validate(body);
+    if (condition.error) {
+      res.status(code.badRequestNumb).json(fail(condition.error.message, 'Bad Request', code.badRequestCode, code.badRequestNumb));
     } else {
-      res.json(success('project type', 'put', update));
+      const update = await putProjectType({ _id: req.params.id }, body);
+      if (update == null) {
+        res.json(fail(
+          code.badRequest, 'data not found', code.badRequestCode, code.badRequestNumb,
+        ));
+      } else {
+        res.json(success('project type', 'put', update));
+      }
     }
   } catch (error) {
     res.status(code.badRequestNumb)

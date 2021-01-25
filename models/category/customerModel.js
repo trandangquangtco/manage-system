@@ -6,7 +6,7 @@ const customerSchema = new Schema({
   customer: { type: String, unique: true, required: true },
   describe: String,
   important: { type: Number, default: 1 },
-  active: Boolean,
+  active: { type: Boolean, default: true },
 }, { collection: 'customer', timestamps: true });
 
 const customer = mongoose.model('customer', customerSchema);

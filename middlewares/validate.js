@@ -15,11 +15,11 @@ const validateProjectType = async (req, res, next) => {
     next();
   } catch (error) {
     if (error.details) {
-      res.status(code.badRequestNumb).json(fail(error.details, 'Invalid data', 'INVALID_DATA', code.badRequestNumb));
+      res.status(code.badRequestNumb).json(fail(error.message, 'Invalid data', 'INVALID_DATA', code.badRequestNumb));
     } else {
       res.status(code.internalErrorNumb)
         .json(fail(
-          error, code.internalError, code.internalErrorCode, code.internalErrorNumb,
+          error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
         ));
     }
   }
@@ -36,11 +36,11 @@ const validateStatus = async (req, res, next) => {
     next();
   } catch (error) {
     if (error.details) {
-      res.status(code.badRequestNumb).json(fail(error.details, 'Invalid data', 'INVALID_DATA', code.badRequestNumb));
+      res.status(code.badRequestNumb).json(fail(error.message, 'Invalid data', 'INVALID_DATA', code.badRequestNumb));
     } else {
       res.status(code.internalErrorNumb)
         .json(fail(
-          error, code.internalError, code.internalErrorCode, code.internalErrorNumb,
+          error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
         ));
     }
   }
@@ -57,11 +57,11 @@ const validateTechStack = async (req, res, next) => {
     next();
   } catch (error) {
     if (error.details) {
-      res.status(code.badRequestNumb).json(fail(error.details, 'Invalid data', 'INVALID_DATA', code.badRequestNumb));
+      res.status(code.badRequestNumb).json(fail(error.message, 'Invalid data', 'INVALID_DATA', code.badRequestNumb));
     } else {
       res.status(code.internalErrorNumb)
         .json(fail(
-          error, code.internalError, code.internalErrorCode, code.internalErrorNumb,
+          error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
         ));
     }
   }
@@ -79,11 +79,11 @@ const validateCustomer = async (req, res, next) => {
     next();
   } catch (error) {
     if (error.details) {
-      res.status(code.badRequestNumb).json(fail(error.details, 'Invalid data', 'INVALID_DATA', code.badRequestNumb));
+      res.status(code.badRequestNumb).json(fail(error.message, 'Invalid data', 'INVALID_DATA', code.badRequestNumb));
     } else {
       res.status(code.internalErrorNumb)
         .json(fail(
-          error, code.internalError, code.internalErrorCode, code.internalErrorNumb,
+          error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
         ));
     }
   }
@@ -100,7 +100,7 @@ const validateProject = async (req, res, next) => {
     next();
   } catch (error) {
     if (error.details) {
-      res.status(code.badRequestNumb).json(fail(error.details, 'Invalid data', 'INVALID_DATA', code.badRequestNumb));
+      res.status(code.badRequestNumb).json(fail(error.message, 'Invalid data', 'INVALID_DATA', code.badRequestNumb));
     } else {
       res.status(code.internalErrorNumb)
         .json(fail(

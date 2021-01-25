@@ -1,40 +1,30 @@
 {
-  message: 'E11000 duplicate key error collection: vmoprj.customer index: customer_1 dup key: { customer: "Cr7i" }',
-  level: 'error',
-  timestamp: '2021-01-21 20:31:52'
-}
-{
-  message: 'E11000 duplicate key error collection: vmoprj.customer index: customer_1 dup key: { customer: "Cr7i" }',
-  level: 'error',
-  timestamp: '2021-01-21 20:32:28'
-}
-{
-  message: 'E11000 duplicate key error collection: vmoprj.customer index: customer_1 dup key: { customer: "Cr7i" }',
-  level: 'error',
-  timestamp: '2021-01-21 20:34:38'
-}
-{
-  message: `Failed to parse: { find: "customer", filter: {}, projection: {}, limit: "4", returnKey: false, showRecordId: false, lsid: { id: UUID("a6176074-70de-4c32-a32f-80e03d20558d") }, $db: "vmoprj" }. 'limit' field must be numeric.`,
-  level: 'error',
-  timestamp: '2021-01-21 23:19:58'
-}
-{
-  message: `Failed to parse: { find: "customer", filter: {}, projection: {}, limit: "4", returnKey: false, showRecordId: false, lsid: { id: UUID("b3194671-c8b6-45b1-af29-855e18f600a5") }, $db: "vmoprj" }. 'limit' field must be numeric.`,
-  level: 'error',
-  timestamp: '2021-01-21 23:22:15'
-}
-{
-  message: 'Skip value must be non-negative, but received: -4',
-  level: 'error',
-  timestamp: '2021-01-21 23:24:32'
-}
-{
-  message: 'Skip value must be non-negative, but received: -4',
-  level: 'error',
-  timestamp: '2021-01-21 23:27:31'
-}
-{
   message: 'E11000 duplicate key error collection: vmoprj.projectType index: projectType_1 dup key: { projectType: "OS1" }',
   level: 'error',
   timestamp: '2021-01-24 12:04:16'
+}
+{
+  message: '"customer" is not allowed to be empty',
+  level: 'error',
+  timestamp: '2021-01-25 14:45:06'
+}
+{
+  message: 'customer validation failed: customer: Path `customer` is required.',
+  level: 'error',
+  timestamp: '2021-01-25 14:55:28'
+}
+{
+  message: 'Cast to Boolean failed for value "false111" at path "active"',
+  level: 'error',
+  timestamp: '2021-01-25 15:07:16'
+}
+{
+  message: 'E11000 duplicate key error collection: vmoprj.customer index: customer_1 dup key: { customer: "customer1" }',
+  level: 'error',
+  timestamp: '2021-01-25 15:08:45'
+}
+{
+  message: 'E11000 duplicate key error collection: vmoprj.customer index: customer_1 dup key: { customer: "customer1" }',
+  level: 'error',
+  timestamp: '2021-01-25 15:15:46'
 }

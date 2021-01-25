@@ -1,5 +1,6 @@
 /* eslint-disable radix */
 import _ from 'lodash';
+import joi from 'joi';
 import {
   addCustomer, findCustomer, findOneCustomer, putCustomer, delCustomer,
 } from '../../services/category/customerService';
@@ -9,8 +10,20 @@ import { logger } from '../../helpers/logger';
 
 const createCustomer = async (req, res) => {
   try {
-    const create = await addCustomer(req.body);
-    res.json(success('customer', 'post', create));
+    const { body } = req;
+    const input = joi.object({
+      customer: joi.string().required(),
+      describe: joi.string(),
+      active: joi.boolean(),
+      important: joi.number(),
+    });
+    const condition = input.validate(body);
+    if (condition.error) {
+      res.status(code.badRequestNumb).json(fail(condition.error.message, 'Bad Request', code.badRequestCode, code.badRequestNumb));
+    } else {
+      const create = await addCustomer(body);
+      res.json(success('post', 'customer', create));
+    }
   } catch (error) {
     res.status(code.badRequestNumb).json(fail(error.message, 'Bad Request', code.badRequestCode, code.badRequestNumb));
     logger.error(error.message);
@@ -28,9 +41,9 @@ const readCustomer = async (req, res) => {
       query, parseInt(Math.ceil(input.limit)) || 3, parseInt(Math.ceil(input.page)) || 1,
     );
     if (read.length < 1) {
-      res.json(success('customer', 'get', code.noValidFound));
+      res.json(success('get', 'customer', code.noValidFound));
     } else {
-      res.json(success('customer', 'get', read));
+      res.json(success('get', 'customer', read));
     }
   } catch (error) {
     logger.error(error.message);
@@ -45,9 +58,9 @@ const readOneCustomer = async (req, res) => {
   try {
     const readOne = await findOneCustomer({ _id: req.params.id });
     if (!readOne) {
-      res.json(success('customer', 'get', code.noValidFound));
+      res.json(success('get', 'customer', code.noValidFound));
     } else {
-      res.json(success('customer', 'get', readOne));
+      res.json(success('get', 'customer', readOne));
     }
   } catch (error) {
     logger.error(error.message);
@@ -60,13 +73,25 @@ const readOneCustomer = async (req, res) => {
 
 const updateCustomer = async (req, res) => {
   try {
-    const update = await putCustomer({ _id: req.params.id }, req.body);
-    if (update == null) {
-      res.json(fail(
-        code.badRequest, 'data not found', code.badRequestCode, code.badRequestNumb,
-      ));
+    const { body } = req;
+    const input = joi.object({
+      customer: joi.string(),
+      describe: joi.string(),
+      active: joi.boolean(),
+      important: joi.number(),
+    });
+    const condition = input.validate(body);
+    if (condition.error) {
+      res.status(code.badRequestNumb).json(fail(condition.error.message, 'Bad Request', code.badRequestCode, code.badRequestNumb));
     } else {
-      res.json(success('customer', 'put', update));
+      const update = await putCustomer({ _id: req.params.id }, body);
+      if (update == null) {
+        res.json(fail(
+          code.badRequest, 'data not found', code.badRequestCode, code.badRequestNumb,
+        ));
+      } else {
+        res.json(success('put', 'customer', update));
+      }
     }
   } catch (error) {
     res.status(code.badRequestNumb)
@@ -85,7 +110,7 @@ const deleteCustomer = async (req, res) => {
         code.badRequest, 'data not found', code.badRequestCode, code.badRequestNumb,
       ));
     }
-    res.json(success('customer', 'delete', remove));
+    res.json(success('delete', 'customer', remove));
   } catch (error) {
     res.status(code.badRequestNumb)
       .json(
