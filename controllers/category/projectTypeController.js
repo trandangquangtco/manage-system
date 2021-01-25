@@ -1,36 +1,39 @@
 /* eslint-disable radix */
 /* eslint-disable prefer-destructuring */
-/* eslint-disable import/extensions */
 import _ from 'lodash';
 import {
   addProjectType, findProjectType, findOneProjectType, putProjectType, delProjectType,
-} from '../../services/category/projectTypeService.js';
-import { fail, success } from '../../helpers/response.js';
-import * as code from '../../constant/code.js';
+} from '../../services/category/projectTypeService';
+import { fail, success } from '../../helpers/response';
+import * as code from '../../constant/code';
 import { logger } from '../../helpers/logger';
 
 const createProjectType = async (req, res) => {
   try {
     const body = req.body;
     const create = await addProjectType(body);
-    res.json(success('project type', 'post', create));
+    res.json(create);
   } catch (error) {
-    res.status(code.badRequestNumb).json(fail(error.message, 'Bad Request', code.badRequestCode, code.badRequestNumb));
     logger.error(error.message);
+    res.status(code.internalErrorNumb)
+      .json(fail(
+        error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
+      ));
   }
 };
 
 const readProjectType = async (req, res) => {
   try {
     const input = req.query;
-    const query = _.omit(input, ['page', 'limit']);
+    const query = _.omit(input, ['page', 'limit', 'from', 'to']);
+    query.createdAt = { $gte: input.from || '2021-01-01', $lte: input.to || '2021-12-31' };
     if (input.page < 1) {
       input.page = 1;
     }
     const read = await findProjectType(
-      query, parseInt(Math.ceil(input.limit)) || 3, parseInt(Math.ceil(input.page)),
+      query, input.limit || 3, parseInt(Math.ceil(input.page)),
     );
-    res.json(success('project type', 'get', read));
+    res.json(read);
   } catch (error) {
     res.status(code.internalErrorNumb)
       .json(fail(
@@ -43,11 +46,7 @@ const readProjectType = async (req, res) => {
 const readOneProjectType = async (req, res) => {
   try {
     const readOne = await findOneProjectType({ _id: req.params.id });
-    if (!readOne) {
-      res.json(success('project type', 'get', code.noValidFound));
-    } else {
-      res.json(success('project type', 'get', readOne));
-    }
+    res.json(success('project type', 'get', readOne));
   } catch (error) {
     logger.error(error.message);
     res.status(code.badRequestNumb)

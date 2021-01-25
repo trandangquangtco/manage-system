@@ -12,5 +12,4 @@ router.get('/users', authenticate, readUser);
 router.get('/users/:id', authenticate, readOneUser);
 router.put('/users/:id', authenticate, updateUser);
 router.delete('/users/:id', authenticate, deleteUser);
-
 export default router;

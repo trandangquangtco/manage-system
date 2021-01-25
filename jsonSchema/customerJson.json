@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/product.schema.json",
+  "title": "Customer",
+  "type": "object",
+  "properties": {
+    "customer": {
+      "description": "name of customer",
+      "type": "string",
+      "minLength": 5
+    },
+    "describe": {
+      "description": "describe the customer",
+      "type": "string"
+    },
+    "important": {
+      "type": "number"
+    },
+    "active": {
+      "type": "boolean",
+      "default": "true"
+    }
+  },
+  "required": ["customer"]
+}

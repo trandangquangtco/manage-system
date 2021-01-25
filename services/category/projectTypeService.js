@@ -1,16 +1,67 @@
+/* eslint-disable radix */
 import { projectType } from '../../models/category/projectTypeModel';
+import { fail, success } from '../../helpers/response';
+import { logger } from '../../helpers/logger';
+import * as code from '../../constant/code';
 
-const addProjectType = (body) => projectType.create(body);
+const addProjectType = async (body) => {
+  try {
+    const create = await projectType.create(body);
+    return success('post', 'project type', create);
+  } catch (error) {
+    logger.error(error.message);
+    return fail(error.message, 'Bad Request', 'BAD_REQUEST', 400);
+  }
+};
 
-const findProjectType = (query, limit, page) => projectType.find(query)
-  .limit(limit).skip(limit * (page - 1));
+const findProjectType = async (query, limit, page) => {
+  try {
+    const read = await projectType.find(query)
+      .limit(parseInt(limit))
+      .skip(limit * (page - 1));
+    return success('get', 'project type', read);
+  } catch (error) {
+    return fail(error.message, 'Bad Request', 'BAD_REQUEST', 400);
+  }
+};
 
-const findOneProjectType = (id) => projectType.findOne(id);
+const findOneProjectType = async (id) => {
+  try {
+    const read = await projectType.findOne(id);
+    return success('get', 'project type', read);
+  } catch (error) {
+    logger.error(error.message);
+    return fail(error.message, 'Bad Request', 'BAD_REQUEST', 400);
+  }
+};
 
-const putProjectType = (id, body) => projectType.findOneAndUpdate(id, body,
-  { new: true, runValidators: true });
+const putProjectType = async (id, body) => {
+  try {
+    const update = await projectType.findOneAndUpdate(id, body, {
+      new: true, runValidators: true,
+    });
+    if (update == null) {
+      return fail(code.badRequest, 'data not found', code.badRequestCode, code.badRequestNumb);
+    }
+    return success('put', 'project type', update);
+  } catch (error) {
+    logger.error(error.message);
+    return fail(error.message, 'Bad Request', 'BAD_REQUEST', 400);
+  }
+};
 
-const delProjectType = (id) => projectType.deleteOne(id);
+const delProjectType = async (id) => {
+  try {
+    const remove = await projectType.deleteOne(id);
+    if (remove.n === 0) {
+      return fail(code.badRequest, 'data not found', code.badRequestCode, code.badRequestNumb);
+    }
+    return success('delete', 'project type', remove);
+  } catch (error) {
+    logger.error(error.message);
+    return fail(error.message, 'Bad Request', 'BAD_REQUEST', 400);
+  }
+};
 
 export {
   addProjectType, findOneProjectType, findProjectType, putProjectType, delProjectType,

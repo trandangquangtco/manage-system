@@ -33,3 +33,8 @@
   level: 'error',
   timestamp: '2021-01-21 23:27:31'
 }
+{
+  message: 'E11000 duplicate key error collection: vmoprj.projectType index: projectType_1 dup key: { projectType: "OS1" }',
+  level: 'error',
+  timestamp: '2021-01-24 12:04:16'
+}

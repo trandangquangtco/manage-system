@@ -62,7 +62,7 @@ const updateUser = async (req, res) => {
             const update = await putUser({ _id: req.params.id }, body);
             if (update == null) {
               res.json(fail(
-                code.badRequest, 'data not found', code.badRequestCode, code.badRequestNumb,
+                code.badRequest, null, code.badRequestCode, code.badRequestNumb,
               ));
             } else {
               res.json(success('put', 'user', update));

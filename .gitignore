@@ -1,5 +1,5 @@
 node_modules
 start.js
-.env
+.env.product
 .env.development
 package-lock.json

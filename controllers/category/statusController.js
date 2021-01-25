@@ -1,31 +1,39 @@
+/* eslint-disable radix */
 /* eslint-disable prefer-destructuring */
-/* eslint-disable import/extensions */
+import _ from 'lodash';
 import {
   addStatus, findOneStatus, findStatus, putStatus, delStatus,
-} from '../../services/category/statusService.js';
-import { fail, success } from '../../helpers/response.js';
-import * as code from '../../constant/code.js';
+} from '../../services/category/statusService';
+import { fail } from '../../helpers/response';
+import * as code from '../../constant/code';
 import { logger } from '../../helpers/logger';
 
 const createStatus = async (req, res) => {
   try {
     const body = req.body;
     const create = await addStatus(body);
-    res.json(success('status', 'post', create));
+    res.json(create);
   } catch (error) {
-    res.status(code.badRequestNumb).json(fail(error.message, 'Bad Request', code.badRequestCode, code.badRequestNumb));
+    res.status(code.internalErrorNumb)
+      .json(fail(
+        error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
+      ));
     logger.error(error.message);
   }
 };
 
 const readStatus = async (req, res) => {
   try {
-    const read = await findStatus(req.query);
-    if (read.length < 1) {
-      res.json(success('status', 'get', code.noValidFound));
-    } else {
-      res.json(success('status', 'get', read));
+    const input = req.query;
+    const query = _.omit(input, ['page', 'limit', 'from', 'to']);
+    query.createdAt = { $gte: input.from || '2021-01-01', $lte: input.to || '2021-12-31' };
+    if (input.page < 1) {
+      input.page = 1;
     }
+    const read = await findStatus(
+      query, input.limit || 3, parseInt(Math.ceil(input.page)),
+    );
+    res.json(read);
   } catch (error) {
     logger.error(error.message);
     res.status(code.internalErrorNumb)
@@ -38,16 +46,12 @@ const readStatus = async (req, res) => {
 const readOneStatus = async (req, res) => {
   try {
     const readOne = await findOneStatus({ _id: req.params.id });
-    if (!readOne) {
-      res.json(success('status', 'get', code.noValidFound));
-    } else {
-      res.json(success('status', 'get', readOne));
-    }
+    res.json(readOne);
   } catch (error) {
-    res.status(code.badRequestNumb)
-      .json(
-        fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
-      );
+    res.status(code.internalErrorNumb)
+      .json(fail(
+        error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
+      ));
     logger.error(error.message);
   }
 };
@@ -55,37 +59,26 @@ const readOneStatus = async (req, res) => {
 const updateStatus = async (req, res) => {
   try {
     const update = await putStatus({ _id: req.params.id }, req.body);
-    if (update == null) {
-      res.json(fail(
-        code.badRequest, 'data not found', code.badRequestCode, code.badRequestNumb,
-      ));
-    } else {
-      res.json(success('status', 'put', update));
-    }
+    res.json(update);
   } catch (error) {
     logger.error(error.message);
-    res.status(code.badRequestNumb)
-      .json(
-        fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
-      );
+    res.status(code.internalErrorNumb)
+      .json(fail(
+        error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
+      ));
   }
 };
 
 const deleteStatus = async (req, res) => {
   try {
     const remove = await delStatus({ _id: req.params.id });
-    if (remove.n === 0) {
-      res.json(fail(
-        code.badRequest, 'data not found', code.badRequestCode, code.badRequestNumb,
-      ));
-    }
-    res.json(success('status', 'delete', remove));
+    res.json(remove);
   } catch (error) {
     logger.error(error.message);
-    res.status(code.badRequestNumb)
-      .json(
-        fail(error.message, code.badRequest, code.badRequestCode, code.badRequestNumb),
-      );
+    res.status(code.internalErrorNumb)
+      .json(fail(
+        error.message, code.internalError, code.internalErrorCode, code.internalErrorNumb,
+      ));
   }
 };
 
